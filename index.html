@@ -154,6 +154,20 @@
         .aspect-w-16 { position: relative; padding-bottom: 56.25%; height: 0; }
         .aspect-w-16 > * { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
+        /* WhatsApp Button Custom Style */
+        .whatsapp-btn {
+            background-color: #25D366; /* WhatsApp Green */
+            color: #ffffff;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: all 0.2s ease-in-out;
+        }
+        .whatsapp-btn:hover {
+            background-color: #1DA851; /* Darker Green on hover */
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+        .whatsapp-btn:active { transform: scale(0.96); }
+
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -174,7 +188,7 @@
         <main class="flex-grow pb-24">
             <div id="home-page" class="p-4 space-y-6 sub-page">
                  <div id="home-products-list" class="space-y-6">
-                    <p class="text-center text-gray-500">Loading amazing offers...</p>
+                    <p class="text-center text-gray-500 py-10">Loading amazing offers...</p>
                 </div>
             </div>
             
@@ -239,7 +253,7 @@
                     </div>
                     <h3 id="profile-name" class="text-2xl font-bold">Loading...</h3>
                     <p id="profile-username" class="text-gray-500">@username</p>
-                    <p id="profile-id" class="text-sm text-gray-400 mt-2">ID: 123456</p>
+                    <p id="profile-id" class="text-sm text-gray-400 mt-2">User ID: 123456</p>
                 </div>
                 
                 <div class="space-y-3 mt-6">
@@ -261,9 +275,9 @@
         </main>
 
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="home-page"><i data-lucide="home" class="icon"></i><span>Home</span></a>
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Update</span></a>
             <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>
+            <a href="#" class="nav-link-premium" data-page="home-page"><i data-lucide="home" class="icon"></i><span>Home</span></a>
             <a href="#" class="nav-link-premium" data-page="reviews-page"><i data-lucide="star" class="icon"></i><span>Review</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
         </nav>
@@ -393,7 +407,6 @@
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
 
-            // === UPDATED PAGE LOAD FUNCTIONS ===
             const pageLoadFunctions = {
                 'home-page': loadHomeProducts,
                 'updates-page': loadUpdates,
@@ -427,12 +440,10 @@
             });
         }
         
-        // === NEW FUNCTION TO LOAD PRODUCTS ON HOME PAGE ===
         async function loadHomeProducts() {
             const container = document.getElementById('home-products-list');
             container.innerHTML = '<p class="text-center text-gray-500 py-10">Loading amazing offers...</p>';
             try {
-                // Query the 'products' collection, order by the 'order' field
                 const q = query(collection(db, "products"), orderBy("order", "asc"));
                 const snapshot = await getDocs(q);
 
@@ -457,14 +468,15 @@
                         <div class="p-4 space-y-3">
                             <div class="flex items-center justify-between gap-4">
                                 <p class="text-2xl font-bold text-green-600">${product.price || 'N/A'}</p>
+                                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">AVAILABLE</span>
                                 ${product.discount ? `<span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">${product.discount} OFF</span>` : ''}
                             </div>
                              <div class="flex items-center gap-3 pt-2">
                                 <a href="${detailsLink}" target="_blank" class="w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 px-4 rounded-lg transition-colors">
                                     View Details
                                 </a>
-                                <a href="${whatsappLink}" target="_blank" class="w-full btn-gradient flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                <a href="${whatsappLink}" target="_blank" class="w-full whatsapp-btn flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg">
+                                    <img src="https://i.postimg.cc/ZRzWdsRL/download.jpg" alt="WhatsApp Icon" class="w-5 h-5">
                                     <span>Contact</span>
                                 </a>
                             </div>
@@ -536,20 +548,18 @@
                                 <h3 class="text-xl font-bold">${updateData.title}</h3>
                                 <p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p>
                                 <div class="flex items-center justify-between gap-4 pt-3 mt-auto">
-                                    <div class="flex items-center gap-4">
-                                        <div class="flex items-center space-x-2">
-                                            <button id="like-btn-${updateId}" class="vote-btn p-2 rounded-full ${isLiked ? 'voted-like' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button>
-                                            <span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span>
-                                        </div>
-                                        <div class="flex items-center space-x-2">
-                                            <button id="dislike-btn-${updateId}" class="vote-btn p-2 rounded-full ${isDisliked ? 'voted-dislike' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button>
-                                            <span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span>
-                                        </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button id="like-btn-${updateId}" class="vote-btn p-2 rounded-full ${isLiked ? 'voted-like' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button>
+                                        <span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span>
                                     </div>
-                                    <div class="flex items-center gap-2 text-gray-500">
-                                        <i data-lucide="eye" class="w-5 h-5"></i>
-                                        <span class="font-semibold text-sm">${(updateData.views || 0) + 1}</span>
+                                    <div class="flex items-center space-x-2">
+                                        <button id="dislike-btn-${updateId}" class="vote-btn p-2 rounded-full ${isDisliked ? 'voted-dislike' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button>
+                                        <span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span>
                                     </div>
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-500">
+                                    <i data-lucide="eye" class="w-5 h-5"></i>
+                                    <span class="font-semibold text-sm">${(updateData.views || 0) + 1}</span>
                                 </div>
                             </div>
                         </div>`;
@@ -574,7 +584,6 @@
             return stars;
         }
 
-        // === UPDATED FUNCTION TO LOAD USER REVIEWS WITH PROFILE PICTURES ===
         async function loadUserReviews() {
             const reviewsList = document.getElementById('user-reviews-list');
             reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
@@ -647,7 +656,6 @@
             });
         }
 
-        // === UPDATED FUNCTION TO HANDLE REVIEW SUBMIT WITH PROFILE PICTURE URL ===
         async function handleReviewSubmit() {
             const reviewText = document.getElementById('review-text-input').value.trim();
             if (selectedRating === 0) {
