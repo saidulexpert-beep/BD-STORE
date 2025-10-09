@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝐁𝐞𝐬𝐭 𝐌𝐚𝐫𝐤𝐞𝐭𝐁𝐨𝐭</title>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8f9fa; 
+            color: #212529;
+            overflow: hidden; /* Prevent scrolling during splash screen */
+        }
+        .card-bg { 
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-bg:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.1);
+        }
+        .text-accent-gradient {
+            background: linear-gradient(to right, #0d6efd, #0b5ed7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn, .btn-gradient { 
+            transition: all 0.2s ease-in-out; 
+            transform: scale(1); 
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn:active, .btn-gradient:active { transform: scale(0.96); }
+        .btn-gradient { 
+            background-image: linear-gradient(to right, #0d6efd, #0b5ed7);
+            color: #ffffff; 
+            font-weight: bold; 
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2);
+        }
+        .btn-gradient:hover { 
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.3);
+            background-image: linear-gradient(to right, #0b5ed7, #0d6efd);
+        }
+        .main-page { display: none; }
+        .main-page.active { display: flex; animation: fadeIn 0.5s ease-in-out; }
+        .sub-page { display: none; }
+        .sub-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        
+        /* Updated Bottom Navigation Bar Styles for 5 items */
+        .bottom-nav {
+             border-top: 1px solid #e9ecef;
+             background-color: rgba(255, 255, 255, 0.85);
+             backdrop-filter: blur(12px);
+             -webkit-backdrop-filter: blur(12px);
+             position: fixed;
+             bottom: 0;
+             left: 0;
+             right: 0;
+             max-width: 672px;
+             margin: 0 auto;
+             display: flex;
+             justify-content: space-around;
+             align-items: center;
+             padding: 8px 0; /* Adjusted padding */
+             z-index: 50;
+        }
+        .nav-link-premium { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #495057;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            position: relative;
+            flex: 1;
+        }
+        .nav-link-premium .icon {
+             width: 24px;
+             height: 24px;
+             transition: all 0.3s ease;
+        }
+        .nav-link-premium:hover .icon, .nav-link-premium:hover span {
+            color: #0d6efd;
+        }
+        .nav-link-premium.active .icon {
+            color: #0d6efd;
+            transform: scale(1.1);
+        }
+        .nav-link-premium.active span {
+            color: #0d6efd;
+        }
+        .nav-link-premium:active { transform: scale(0.95); }
+       
+        .header { 
+            border-bottom: 1px solid #e9ecef; 
+            background-color: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); 
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Splash Screen Styles */
+        #splash-screen {
+            position: fixed; inset: 0; background-color: #ffffff; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: opacity 0.5s ease-out;
+        }
+        .splash-loader {
+            width: 50px; height: 50px; border-radius: 50%; border: 5px solid #f1f3f5; border-top-color: #0d6efd; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Vote button styles */
+        .vote-btn { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease; }
+        .vote-btn:active { transform: scale(0.85); }
+        .vote-btn.voted-like { color: #0d6efd; transform: scale(1.2); }
+        .vote-btn.voted-dislike { color: #dc3545; transform: scale(1.2); }
+
+        /* Premium Review Card Styles */
+        .review-card-premium { background-color: #ffffff; border: 1px solid #eef2f7; border-radius: 20px; padding: 20px; box-shadow: 0 8px 24px rgba(0, 30, 80, 0.08); display: flex; flex-direction: column; gap: 12px; }
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+        .reviewer-info { display: flex; align-items: center; gap: 12px; }
+        .review-avatar-premium { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; color: #fff; background: linear-gradient(135deg, #1e90ff, #0d6efd); flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .review-name-premium { font-weight: 700; font-size: 1.1rem; color: #212529; }
+        .review-date { font-size: 0.75rem; color: #6c757d; }
+        .review-stars .lucide-star { fill: #ffc107; color: #ffc107; }
+        .review-body { position: relative; padding-left: 28px; padding-top: 8px; }
+        .review-body .lucide-quote { position: absolute; left: 0; top: 0; width: 20px; height: 20px; color: #e9ecef; }
+        .review-text-premium { color: #343a40; font-size: 0.95rem; line-height: 1.6; }
+
+        /* Scrolling Text (Marquee) Styles */
+        @keyframes scroll-left { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .scrolling-text-container { width: 100%; overflow: hidden; background-color: #e9ecef; padding: 10px 0; border-radius: 8px; }
+        .scrolling-text { display: inline-block; white-space: nowrap; animation: scroll-left 20s linear infinite; font-weight: 500; color: #495057; }
+        
+        /* Review Modal Styles */
+        #review-modal .rating-stars .lucide-star {
+            cursor: pointer;
+            color: #d1d5db; /* gray-300 */
+            transition: color 0.2s, transform 0.2s;
+        }
+        #review-modal .rating-stars .lucide-star:hover {
+            transform: scale(1.2);
+            color: #facc15; /* yellow-400 */
+        }
+        #review-modal .rating-stars.selected .lucide-star { color: #facc15; }
+
+    </style>
+</head>
+<body class="max-w-md mx-auto">
+
+    <div id="splash-screen">
+        <h1 class="text-3xl font-bold text-accent-gradient">𝐁𝐞𝐬𝐭 𝐌𝐚𝐫𝐤𝐞𝐭𝐁𝐨𝐭</h1>
+        <div class="splash-loader"></div>
+        <p class="text-gray-500">Loading Your Dashboard...</p>
+    </div>
+
+    <div id="app-container" class="min-h-screen flex-col main-page" style="display: none;">
+        <header class="header flex items-center justify-center p-4 sticky top-0 z-10">
+            <div class="flex items-center space-x-2">
+                <h1 class="text-xl font-bold text-accent-gradient">𝐁𝐞𝐬𝐭 𝐌𝐚𝐫𝐤𝐞𝐭𝐁𝐨𝐭</h1>
+            </div>
+        </header>
+
+        <main class="flex-grow pb-24">
+            <div id="home-page" class="p-4 sub-page">
+                <div class="scrolling-text-container">
+                    <p class="scrolling-text">Welcome to Best MarketBot ✨ আপনার সকল ডিজিটাল প্রয়োজনের জন্য ওয়ান-স্টপ সমাধান ✨ সর্বশেষ খবর এবং অফারগুলির জন্য আপডেট বিভাগটি দেখুন! ✨</p>
+                </div>
+                 </div>
+            
+            <div id="updates-page" class="p-4 space-y-6 sub-page relative pb-24">
+                <h2 class="text-xl font-bold text-center">🌟 𝐍𝐞𝐰 𝐔𝐩𝐝𝐚𝐭𝐞</h2>
+                <div id="updates-content" class="space-y-4"><p class="text-center text-gray-500">Loading updates...</p></div>
+            </div>
+
+            <div id="tutorial-page" class="p-4 space-y-6 sub-page relative pb-24">
+                 <h2 class="text-xl font-bold text-center">🎥 কিভাবে কাজ করবেন?</h2>
+                 <details class="card-bg rounded-xl overflow-hidden" open>
+                    <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                        <span>Tutorial Video</span>
+                        <i data-lucide="chevron-down" class="lucide-chevron-down transition-transform duration-300"></i>
+                    </summary>
+                    <div class="p-4 border-t border-gray-200">
+                        <div class="aspect-w-16 aspect-h-9">
+                             <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </details>
+                <style>
+                    details summary::-webkit-details-marker { display: none; }
+                    details summary .lucide-chevron-down { transform: rotate(0deg); }
+                    details[open] summary .lucide-chevron-down { transform: rotate(180deg); }
+                    .aspect-w-16 { position: relative; padding-bottom: 56.25%; }
+                    .aspect-h-9 { height: 0; }
+                    .aspect-w-16 > iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+                </style>
+            </div>
+
+            <div id="reviews-page" class="p-4 space-y-6 sub-page relative pb-24">
+                <h2 class="text-xl font-bold text-center mb-4">🌟 𝐔𝐬𝐞𝐫 𝐑𝐞𝐯𝐢𝐞𝐰𝐬</h2>
+                <div id="user-reviews-list" class="space-y-4">
+                    <p class="text-center text-gray-500">Loading reviews...</p>
+                </div>
+                 <button id="add-review-btn" class="btn-gradient fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-40 transform hover:scale-110 transition-transform">
+                    <i data-lucide="plus" class="w-8 h-8 text-white"></i>
+                </button>
+            </div>
+
+            <div id="profile-page" class="p-4 space-y-6 sub-page">
+                <div class="card-bg p-6 rounded-2xl flex flex-col items-center text-center">
+                    <div class="relative mb-4">
+                        <img id="profile-pic" class="w-24 h-24 rounded-full border-2 border-[#0d6efd] object-cover hidden" src="" alt="Profile Picture">
+                        <div id="profile-initials-avatar" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-[#0d6efd]"><span id="profile-initials" class="text-3xl font-bold text-gray-600"></span></div>                        
+                    </div>
+                    <h3 id="profile-name" class="text-2xl font-bold">Loading...</h3>
+                    <p id="profile-username" class="text-gray-500">@username</p>
+                    <p id="profile-id" class="text-sm text-gray-400 mt-2">ID: 123456</p>
+                </div>
+                
+                <div class="space-y-3 mt-6">
+                    <a href="https://wa.me/8801864260513" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
+                        <span>💬 𝐒𝐮𝐩𝐩𝐨𝐫𝐭 𝐓𝐞𝐚𝐦</span>
+                        <i data-lucide="arrow-up-right" class="w-5 h-5 text-gray-500"></i>
+                    </a>
+                </div>
+                
+                <div class="text-center pt-6">
+                     <div class="flex justify-center items-center space-x-5 mb-4">
+                        <a href="https://youtube.com/@saidulexpert?si=cLoL--gRC0MRr-Ku" target="_blank" class="social-link bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-all duration-200"><img src="https://i.postimg.cc/3wbrrSt5/images-2.png" alt="YouTube Channel" class="w-6 h-6"></a>
+                        <a href="https://whatsapp.com/channel/0029Vb7ElokCXC3KCo4kKw0d" target="_blank" class="social-link bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-all duration-200"><img src="https://i.postimg.cc/JzmGSXBX/images.jpg" alt="WhatsApp Channel" class="w-6 h-6"></a>
+                        <a href="https://t.me/BestMarketMain" target="_blank" class="social-link bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-all duration-200"><img src="https://i.postimg.cc/P5ZPR4xZ/images.png" alt="Telegram Channel" class="w-6 h-6"></a>
+                    </div>
+                    <p class="text-center text-gray-500 text-sm">Developed by <a href="https://t.me/bd_Storebot/Botshop" target="_blank" class="font-semibold text-[#0d6efd] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p>
+                </div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="#" class="nav-link-premium" data-page="home-page"><i data-lucide="home" class="icon"></i><span>Home</span></a>
+            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Update</span></a>
+            <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>
+            <a href="#" class="nav-link-premium" data-page="reviews-page"><i data-lucide="star" class="icon"></i><span>Review</span></a>
+            <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
+        </nav>
+    </div>
+
+    <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[101] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 shadow-xl">
+            <p id="alert-message" class="mb-5 whitespace-pre-wrap"></p>
+            <button id="alert-ok-btn" class="btn-gradient px-8 py-2 rounded-lg">OK</button>
+        </div>
+    </div>
+    
+    <div id="review-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl p-6 w-full max-w-sm text-center border border-gray-200 shadow-xl space-y-4">
+            <h3 class="text-lg font-bold">আপনার মতামত দিন</h3>
+            <div id="review-rating-stars" class="rating-stars flex justify-center gap-2 text-3xl">
+                <i data-lucide="star" data-value="1"></i>
+                <i data-lucide="star" data-value="2"></i>
+                <i data-lucide="star" data-value="3"></i>
+                <i data-lucide="star" data-value="4"></i>
+                <i data-lucide="star" data-value="5"></i>
+            </div>
+            <textarea id="review-text-input" class="w-full border border-gray-300 rounded-lg p-2 h-24" placeholder="আপনার মূল্যবান মতামত লিখুন..."></textarea>
+            <div class="flex gap-4">
+                <button id="cancel-review-btn" class="w-full bg-gray-200 text-gray-700 py-2 rounded-lg font-semibold">Cancel</button>
+                <button id="submit-review-btn" class="w-full btn-gradient py-2 rounded-lg">Submit</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+const firebaseConfig = {
+  apiKey: "AIzaSyC8Yk4PYImkCsil2KMySE4I7amM7_GJwJw",
+  authDomain: "bd-store-e74c5.firebaseapp.com",
+  databaseURL: "https://bd-store-e74c5-default-rtdb.firebaseio.com",
+  projectId: "bd-store-e74c5",
+  storageBucket: "bd-store-e74c5.firebasestorage.app",
+  messagingSenderId: "318601642421",
+  appId: "1:318601642421:web:fc7304c3e2464b234459fc"
+};
+        
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, writeBatch, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let currentUser = null; 
+        let currentUserId = null; 
+        let userData = null;
+        let previousPageId = 'home-page'; 
+        let selectedRating = 0; // For review modal
+        
+        const splashScreen = document.getElementById('splash-screen');
+        
+        window.onload = async () => {
+            try {
+                window.Telegram.WebApp.ready();
+                window.Telegram.WebApp.expand();
+                
+                currentUser = window.Telegram.WebApp.initDataUnsafe?.user;
+
+                if (!currentUser) {
+                    document.body.innerHTML = `<div class="flex items-center justify-center h-screen text-center p-4"> <p class="text-red-500 font-bold">This application can only be accessed through Telegram.</p> </div>`;
+                    splashScreen.style.display = 'none';
+                    return;
+                }
+                
+                currentUserId = String(currentUser.id);
+
+                await initializeAppLogic();
+
+            } catch (e) {
+                console.error("Initialization failed:", e);
+                document.body.innerHTML = `<div class="flex items-center justify-center h-screen text-center p-4"> <p class="text-red-500 font-bold">An error occurred. Please try again later.</p> </div>`;
+            } 
+        };
+        
+        async function initializeAppLogic() {
+            lucide.createIcons();
+            setupEventListeners();
+            
+            await fetchOrCreateUser();
+
+            if (userData && userData.isBlocked) {
+                showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
+                document.getElementById('app-container').classList.add('hidden');
+                return;
+            }
+            
+            navigateTo('home-page', true); 
+
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.body.style.overflow = 'auto';
+            }, 500);
+        }
+
+        async function fetchOrCreateUser() {
+            if (!currentUserId) return;
+            
+            const userRef = doc(db, "users", currentUserId);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+                userData = userSnap.data();
+            } else {
+                const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
+                const newUserData = {
+                    uid: currentUserId,
+                    name: fullName || currentUser.username || 'New User',
+                    username: currentUser.username || '',
+                    createdAt: serverTimestamp(),
+                    isBlocked: false,
+                };
+                
+                await setDoc(userRef, newUserData);
+                userData = newUserData;
+            }
+        }
+
+        function navigateTo(pageId, isInitial = false) {
+            if (!isInitial) {
+                const currentPage = document.querySelector('.sub-page.active');
+                if (currentPage) {
+                    previousPageId = currentPage.id;
+                }
+            } else {
+                 previousPageId = 'home-page';
+            }
+
+            document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-link-premium').forEach(link => {
+                link.classList.toggle('active', link.dataset.page === pageId);
+            });
+
+            const pageLoadFunctions = {
+                'updates-page': loadUpdates,
+                'reviews-page': loadUserReviews,
+                'profile-page': loadProfilePage,
+            };
+            if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
+            lucide.createIcons();
+        }
+        window.navigateTo = navigateTo;
+
+        function setupEventListeners() {
+            document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
+            
+            // Review Modal Listeners
+            document.getElementById('add-review-btn').addEventListener('click', showReviewModal);
+            document.getElementById('cancel-review-btn').addEventListener('click', hideReviewModal);
+            document.getElementById('submit-review-btn').addEventListener('click', handleReviewSubmit);
+            document.querySelectorAll('#review-rating-stars .lucide-star').forEach(star => {
+                star.addEventListener('click', () => {
+                    selectedRating = parseInt(star.dataset.value);
+                    updateStarRatingUI();
+                });
+            });
+        }
+        
+        async function loadProfilePage() {
+            if (!userData) return;
+            
+            const profilePic = document.getElementById('profile-pic');
+            const avatarDiv = document.getElementById('profile-initials-avatar');
+            if (currentUser.photo_url) {
+                profilePic.src = currentUser.photo_url;
+                profilePic.classList.remove('hidden');
+                avatarDiv.classList.add('hidden');
+            } else {
+                const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('profile-initials').textContent = initials;
+                profilePic.classList.add('hidden');
+                avatarDiv.classList.remove('hidden');
+            }
+            
+            document.getElementById('profile-name').textContent = userData.name;
+            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : 'No Telegram username';
+            document.getElementById('profile-id').textContent = `User ID: ${currentUserId}`;
+
+            lucide.createIcons();
+        }
+        
+        async function loadUpdates() {
+            const updatesContainer = document.getElementById('updates-content');
+            updatesContainer.innerHTML = '<p class="text-center text-gray-500">Loading updates...</p>';
+
+            try {
+                const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(10));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
+                } else {
+                    let allUpdatesHtml = '';
+                    const batch = writeBatch(db); 
+                    for (const docSnap of snapshot.docs) {
+                        const updateData = docSnap.data();
+                        const updateId = docSnap.id;
+
+                        const updateRef = doc(db, "updates", updateId);
+                        batch.update(updateRef, { views: increment(1) });
+
+                        const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
+                        const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
+
+                        const isLiked = userVote === 'liked';
+                        const isDisliked = userVote === 'disliked';
+                        
+                        allUpdatesHtml += `
+                        <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
+                            <a href="${updateData.linkUrl || '#'}" target="_blank" class="block w-full aspect-video">
+                                <img src="${updateData.imageUrl}" class="w-full h-full object-cover" alt="Update Banner">
+                            </a>
+                            <div class="p-5 space-y-3 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold">${updateData.title}</h3>
+                                <p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p>
+                                <div class="flex items-center justify-between gap-4 pt-3 mt-auto">
+                                    <div class="flex items-center gap-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button id="like-btn-${updateId}" class="vote-btn p-2 rounded-full ${isLiked ? 'voted-like' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button>
+                                            <span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button id="dislike-btn-${updateId}" class="vote-btn p-2 rounded-full ${isDisliked ? 'voted-dislike' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button>
+                                            <span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-500">
+                                        <i data-lucide="eye" class="w-5 h-5"></i>
+                                        <span class="font-semibold text-sm">${(updateData.views || 0) + 1}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                    await batch.commit(); 
+                    updatesContainer.innerHTML = allUpdatesHtml;
+                }
+                
+                lucide.createIcons();
+            } catch (e) {
+                console.error("Error loading updates:", e);
+                updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
+            }
+        }
+
+        function renderStars(rating) {
+            let stars = '<div class="flex items-center gap-1 review-stars">';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<i data-lucide="star" class="w-4 h-4" style="fill: ${i <= rating ? '#ffc107' : 'none'}; color: ${i <= rating ? '#ffc107' : '#e9ecef'};"></i>`;
+            }
+            stars += '</div>';
+            return stars;
+        }
+
+        async function loadUserReviews() {
+            const reviewsList = document.getElementById('user-reviews-list');
+            reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
+            try {
+                const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(10));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    reviewsList.innerHTML = '<p class="text-center text-gray-500">No reviews yet. Be the first!</p>';
+                    return;
+                }
+                
+                reviewsList.innerHTML = snapshot.docs.map(doc => {
+                    const review = doc.data();
+                    const starsHtml = renderStars(review.rating || 5);
+                    const initial = review.userName ? review.userName.charAt(0).toUpperCase() : 'U';
+                    const date = review.createdAt ? review.createdAt.toDate().toLocaleDateString('en-GB', {
+                        day: 'numeric', month: 'long', year: 'numeric'
+                    }) : '';
+
+                    return `
+                    <div class="review-card-premium">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="review-avatar-premium">${initial}</div>
+                                <div>
+                                    <div class="review-name-premium">${review.userName}</div>
+                                    <div class="review-date">${date}</div>
+                                </div>
+                            </div>
+                            ${starsHtml}
+                        </div>
+                        <div class="review-body">
+                             <i data-lucide="quote" class="lucide-quote"></i>
+                            <p class="review-text-premium">${review.reviewText}</p>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Error loading reviews:", error);
+                reviewsList.innerHTML = '<p class="text-center text-red-500">Could not load reviews.</p>';
+            }
+        }
+        
+        // Review Modal Functions
+        function showReviewModal() {
+            selectedRating = 0;
+            updateStarRatingUI();
+            document.getElementById('review-text-input').value = '';
+            document.getElementById('review-modal').classList.remove('hidden');
+        }
+
+        function hideReviewModal() {
+            document.getElementById('review-modal').classList.add('hidden');
+        }
+        
+        function updateStarRatingUI() {
+            const stars = document.querySelectorAll('#review-rating-stars .lucide-star');
+            stars.forEach(star => {
+                const starValue = parseInt(star.dataset.value);
+                if (starValue <= selectedRating) {
+                    star.style.fill = '#facc15'; // yellow-400
+                    star.style.color = '#facc15';
+                } else {
+                    star.style.fill = 'none';
+                    star.style.color = '#d1d5db'; // gray-300
+                }
+            });
+        }
+
+        async function handleReviewSubmit() {
+            const reviewText = document.getElementById('review-text-input').value.trim();
+            if (selectedRating === 0) {
+                showAlert("Please select a star rating.");
+                return;
+            }
+            if (reviewText === "") {
+                showAlert("Please write your review.");
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-review-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                await addDoc(collection(db, "app_reviews"), {
+                    userName: userData.name,
+                    userId: currentUserId,
+                    rating: selectedRating,
+                    reviewText: reviewText,
+                    createdAt: serverTimestamp()
+                });
+                showAlert("Thank you! Your review has been submitted successfully.");
+                hideReviewModal();
+                loadUserReviews(); // Refresh the reviews list
+            } catch (error) {
+                console.error("Error submitting review: ", error);
+                showAlert("Sorry, there was an error submitting your review. Please try again.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+            }
+        }
+
+
+        window.handleVote = async function(voteType, updateId) {
+            const likeBtn = document.getElementById(`like-btn-${updateId}`);
+            const dislikeBtn = document.getElementById(`dislike-btn-${updateId}`);
+            likeBtn.disabled = true;
+            dislikeBtn.disabled = true;
+
+            const updateRef = doc(db, "updates", updateId);
+            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", currentUserId);
+            
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const userInteractionDoc = await transaction.get(userInteractionRef);
+                    if (userInteractionDoc.exists()) throw new Error("You have already cast your vote.");
+                    
+                    const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
+                    transaction.update(updateRef, { [fieldToUpdate]: increment(1) });
+                    transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
+                });
+                const countElement = document.getElementById(`${voteType}-count-${updateId}`);
+                countElement.textContent = parseInt(countElement.textContent) + 1;
+                
+                if(voteType === 'like') {
+                    likeBtn.classList.remove('text-gray-500');
+                    likeBtn.classList.add('voted-like');
+                }
+                if(voteType === 'dislike') {
+                    dislikeBtn.classList.remove('text-gray-500');
+                    dislikeBtn.classList.add('voted-dislike');
+                }
+
+            } catch (e) {
+                showAlert(e.message || "Failed to submit your vote.");
+                likeBtn.disabled = false;
+                dislikeBtn.disabled = false;
+            }
+        }
+
+        function showAlert(message) {
+            document.getElementById('alert-message').innerText = message;
+            document.getElementById('custom-alert').classList.remove('hidden');
+            document.getElementById('alert-ok-btn').onclick = () => document.getElementById('custom-alert').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
