@@ -156,17 +156,90 @@
 
         /* WhatsApp Button Custom Style */
         .whatsapp-btn {
-            background-color: #25D366; /* WhatsApp Green */
+            background-color: #25D366;
             color: #ffffff;
             font-weight: bold;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
             transition: all 0.2s ease-in-out;
         }
         .whatsapp-btn:hover {
-            background-color: #1DA851; /* Darker Green on hover */
+            background-color: #1DA851;
             box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
         }
         .whatsapp-btn:active { transform: scale(0.96); }
+
+        /* === NEW: Premium Product Card Style === */
+        .product-card-premium {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #eef2f7;
+            box-shadow: 0 10px 30px rgba(0, 30, 80, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card-premium:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(13, 110, 253, 0.15);
+        }
+        .product-image-container {
+            position: relative;
+        }
+        .product-price {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        /* === NEW: Product Details Modal === */
+        #product-details-modal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 150;
+            display: flex;
+            align-items: flex-end; /* Changed to flex-end */
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        #product-details-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .details-modal-content {
+            background-color: #f8f9fa;
+            width: 100%;
+            max-width: 672px; /* Match body width */
+            border-radius: 24px 24px 0 0;
+            padding: 24px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #product-details-modal.visible .details-modal-content {
+            transform: translateY(0);
+        }
+        .details-step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
 
     </style>
 </head>
@@ -240,7 +313,7 @@
                 <div id="user-reviews-list" class="space-y-4">
                     <p class="text-center text-gray-500">Loading reviews...</p>
                 </div>
-                 <button id="add-review-btn" class="btn-gradient fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-40 transform hover:scale-110 transition-transform">
+                 <button id="add-review-btn" class="btn-gradient fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-40 transform hover:scale-110 transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
                     <i data-lucide="plus" class="w-8 h-8 text-white"></i>
                 </button>
             </div>
@@ -282,6 +355,17 @@
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
         </nav>
     </div>
+
+    <div id="product-details-modal" onclick="hideProductDetails()">
+        <div class="details-modal-content" onclick="event.stopPropagation()">
+            <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div> <h2 id="details-title" class="text-2xl font-bold text-center mb-4">Product Details</h2>
+            <div id="details-steps-container" class="space-y-3 mb-6">
+                </div>
+            <div id="details-buttons-container" class="grid grid-cols-2 gap-4">
+                 </div>
+        </div>
+    </div>
+
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[101] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 shadow-xl">
@@ -392,6 +476,7 @@
                     name: fullName || currentUser.username || 'New User',
                     username: currentUser.username || '',
                     createdAt: serverTimestamp(),
+                    lastReviewTimestamp: null, // NEW: Add this field for new users
                     isBlocked: false,
                 };
                 
@@ -440,6 +525,7 @@
             });
         }
         
+        // MODIFIED: Product loading function with premium design
         async function loadHomeProducts() {
             const container = document.getElementById('home-products-list');
             container.innerHTML = '<p class="text-center text-gray-500 py-10">Loading amazing offers...</p>';
@@ -452,30 +538,25 @@
                     return;
                 }
 
-                container.innerHTML = snapshot.docs.map((doc, index) => {
+                container.innerHTML = snapshot.docs.map(doc => {
                     const product = doc.data();
-                    const whatsappLink = product.whatsappLink || 'https://wa.me/8801864260513';
-                    const detailsLink = product.detailsLink || '#';
-
+                    const productId = doc.id;
+                    const whatsappLink = product.contactLink || 'https://wa.me/8801864260513';
+                    
                     return `
-                    <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
-                        <div class="relative">
-                            <a href="${product.linkUrl || '#'}" target="_blank" class="block w-full aspect-w-16">
-                                <img src="${product.imageUrl}" class="object-cover" alt="Product Banner">
-                            </a>
-                            <div class="absolute top-3 left-3 bg-black bg-opacity-60 text-white font-bold text-sm px-3 py-1 rounded-full">#${index + 1}</div>
+                    <div class="product-card-premium">
+                        <div class="product-image-container aspect-w-16">
+                            <img src="${product.imageUrl}" class="object-cover" alt="${product.title || 'Product Image'}">
+                            <div class="product-price">${product.price || 'N/A'}</div>
                         </div>
-                        <div class="p-4 space-y-3">
-                            <div class="flex items-center justify-between gap-4">
-                                <p class="text-2xl font-bold text-green-600">${product.price || 'N/A'}</p>
-                                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">AVAILABLE</span>
-                                ${product.discount ? `<span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">${product.discount} OFF</span>` : ''}
-                            </div>
-                             <div class="flex items-center gap-3 pt-2">
-                                <a href="${detailsLink}" target="_blank" class="w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 px-4 rounded-lg transition-colors">
+                        <div class="p-5 flex-grow flex flex-col">
+                            <h3 class="text-xl font-bold text-gray-800">${product.title || 'Awesome Product'}</h3>
+                            <p class="text-gray-500 text-sm mt-1 mb-4 flex-grow">${product.description || 'Check out the details for more.'}</p>
+                            <div class="grid grid-cols-2 gap-3 mt-auto">
+                                <button onclick="showProductDetails('${productId}')" class="w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl transition-colors">
                                     View Details
-                                </a>
-                                <a href="${whatsappLink}" target="_blank" class="w-full whatsapp-btn flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg">
+                                </button>
+                                <a href="${whatsappLink}" target="_blank" class="w-full whatsapp-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl">
                                     <img src="https://i.postimg.cc/ZRzWdsRL/download.jpg" alt="WhatsApp Icon" class="w-5 h-5">
                                     <span>Contact</span>
                                 </a>
@@ -490,6 +571,71 @@
             }
         }
         
+        // NEW: Function to show product details modal
+        window.showProductDetails = async function(productId) {
+            const modal = document.getElementById('product-details-modal');
+            const titleEl = document.getElementById('details-title');
+            const stepsContainer = document.getElementById('details-steps-container');
+            const buttonsContainer = document.getElementById('details-buttons-container');
+
+            titleEl.textContent = 'Loading...';
+            stepsContainer.innerHTML = '';
+            buttonsContainer.innerHTML = '';
+            modal.classList.add('visible');
+            
+            try {
+                const productDoc = await getDoc(doc(db, "products", productId));
+                if (!productDoc.exists()) {
+                    throw new Error("Product not found.");
+                }
+                const product = productDoc.data();
+
+                titleEl.textContent = product.title || 'Product Details';
+
+                // Load steps from Firestore (assuming 'detailsSteps' is an array of strings)
+                const steps = product.detailsSteps || [];
+                if (steps.length > 0) {
+                    stepsContainer.innerHTML = steps.map(step => `
+                        <div class="details-step-item">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"></i>
+                            <span class="text-gray-700">${step}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    stepsContainer.innerHTML = '<p class="text-center text-gray-500">No specific details provided.</p>';
+                }
+                
+                // Load buttons from Firestore
+                const contactLink = product.contactLink || 'https://wa.me/8801864260513';
+                const demoLink = product.demoLink; // This can be undefined
+
+                buttonsContainer.innerHTML = `
+                    <a href="${contactLink}" target="_blank" class="w-full btn-gradient flex items-center justify-center gap-2 py-3 px-4 rounded-xl">
+                        <i data-lucide="send" class="w-5 h-5"></i><span>Contact</span>
+                    </a>
+                `;
+                if(demoLink) {
+                    buttonsContainer.innerHTML += `
+                    <a href="${demoLink}" target="_blank" class="w-full bg-white border border-gray-300 text-gray-800 font-bold flex items-center justify-center gap-2 py-3 px-4 rounded-xl hover:bg-gray-100 transition-colors">
+                        <i data-lucide="play-circle" class="w-5 h-5"></i><span>Demo Bot</span>
+                    </a>
+                    `;
+                }
+
+                lucide.createIcons();
+
+            } catch(error) {
+                console.error("Error fetching product details:", error);
+                titleEl.textContent = 'Error';
+                stepsContainer.innerHTML = '<p class="text-center text-red-500">Could not load details.</p>';
+            }
+        }
+
+        // NEW: Function to hide product details modal
+        window.hideProductDetails = function() {
+            document.getElementById('product-details-modal').classList.remove('visible');
+        }
+
         async function loadProfilePage() {
             if (!userData) return;
             
@@ -556,10 +702,10 @@
                                         <button id="dislike-btn-${updateId}" class="vote-btn p-2 rounded-full ${isDisliked ? 'voted-dislike' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button>
                                         <span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span>
                                     </div>
-                                </div>
-                                <div class="flex items-center gap-2 text-gray-500">
-                                    <i data-lucide="eye" class="w-5 h-5"></i>
-                                    <span class="font-semibold text-sm">${(updateData.views || 0) + 1}</span>
+                                    <div class="flex items-center gap-2 text-gray-500">
+                                        <i data-lucide="eye" class="w-5 h-5"></i>
+                                        <span class="font-semibold text-sm">${(updateData.views || 0) + 1}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>`;
@@ -587,6 +733,10 @@
         async function loadUserReviews() {
             const reviewsList = document.getElementById('user-reviews-list');
             reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
+            
+            // NEW: Check 7-day review cooldown
+            checkReviewCooldown();
+
             try {
                 const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(10));
                 const snapshot = await getDocs(q);
@@ -636,7 +786,28 @@
             }
         }
         
+        // NEW: Function to check and handle review cooldown
+        function checkReviewCooldown() {
+            const addReviewBtn = document.getElementById('add-review-btn');
+            if (userData && userData.lastReviewTimestamp) {
+                const lastReviewTime = userData.lastReviewTimestamp.toDate().getTime();
+                const currentTime = new Date().getTime();
+                const sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
+                
+                if (currentTime - lastReviewTime < sevenDaysInMillis) {
+                    addReviewBtn.disabled = true;
+                    return true; // User is on cooldown
+                }
+            }
+            addReviewBtn.disabled = false;
+            return false; // User is not on cooldown
+        }
+
         function showReviewModal() {
+            if (checkReviewCooldown()) {
+                 showAlert("আপনি ৭ দিনের মধ্যে আবার রিভিউ দিতে পারবেন।");
+                 return;
+            }
             selectedRating = 0;
             updateStarRatingUI(); 
             document.getElementById('review-text-input').value = '';
@@ -657,6 +828,11 @@
         }
 
         async function handleReviewSubmit() {
+            // Re-check cooldown on submit
+            if (checkReviewCooldown()) {
+                 showAlert("আপনি ইতিমধ্যেই একটি রিভিউ জমা দিয়েছেন।");
+                 return;
+            }
             const reviewText = document.getElementById('review-text-input').value.trim();
             if (selectedRating === 0) {
                 showAlert("Please select a star rating.");
@@ -672,17 +848,25 @@
             submitBtn.textContent = 'Submitting...';
 
             try {
+                // Add the review
                 await addDoc(collection(db, "app_reviews"), {
                     userName: userData.name,
                     userId: currentUserId,
                     rating: selectedRating,
                     reviewText: reviewText,
-                    userPhotoUrl: currentUser.photo_url || null, // Saving user's photo URL
+                    userPhotoUrl: currentUser.photo_url || null,
                     createdAt: serverTimestamp()
                 });
+
+                // NEW: Update user's last review timestamp
+                const userRef = doc(db, "users", currentUserId);
+                const newTimestamp = serverTimestamp();
+                await updateDoc(userRef, { lastReviewTimestamp: newTimestamp });
+                userData.lastReviewTimestamp = { toDate: () => new Date() }; // Update local user data immediately
+
                 showAlert("Thank you! Your review has been submitted successfully.");
                 hideReviewModal();
-                loadUserReviews();
+                loadUserReviews(); // Reload to show new review and update button state
             } catch (error) {
                 console.error("Error submitting review: ", error);
                 showAlert("Sorry, there was an error submitting your review. Please try again.");
