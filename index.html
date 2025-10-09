@@ -138,18 +138,18 @@
         .review-body .lucide-quote { position: absolute; left: 0; top: 0; width: 20px; height: 20px; color: #e9ecef; }
         .review-text-premium { color: #343a40; font-size: 0.95rem; line-height: 1.6; }
 
-        /* Scrolling Text (Marquee) Styles */
+        /* Scrolling Text (Marquee) Styles -- FASTER */
         @keyframes scroll-left { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .scrolling-text-container { width: 100%; overflow: hidden; background-color: #e9ecef; padding: 10px 0; border-radius: 8px; }
-        .scrolling-text { display: inline-block; white-space: nowrap; animation: scroll-left 40s linear infinite; font-weight: 500; color: #495057; }
+        .scrolling-text { display: inline-block; white-space: nowrap; animation: scroll-left 30s linear infinite; font-weight: 500; color: #495057; }
         
         /* Review Modal Styles */
-        #review-modal .rating-stars .lucide-star {
+        #review-rating-stars .lucide-star, #review-rating-stars svg {
             cursor: pointer;
             color: #d1d5db; /* gray-300 */
             transition: color 0.2s, transform 0.2s;
         }
-        #review-modal .rating-stars .lucide-star:hover {
+        #review-rating-stars .lucide-star:hover, #review-rating-stars svg:hover {
             transform: scale(1.2);
             color: #facc15; /* yellow-400 */
         }
@@ -183,7 +183,7 @@
                         Welcome to Best MarketBot ✨ আপনার সকল ডিজিটাল প্রয়োজনের জন্য ওয়ান-স্টপ সমাধান ✨ সর্বশেষ খবর এবং অফারগুলির জন্য আপডেট বিভাগটি দেখুন! ✨ &nbsp;&nbsp;&nbsp; Welcome to Best MarketBot ✨ আপনার সকল ডিজিটাল প্রয়োজনের জন্য ওয়ান-স্টপ সমাধান ✨ সর্বশেষ খবর এবং অফারগুলির জন্য আপডেট বিভাগটি দেখুন! ✨ &nbsp;&nbsp;&nbsp;
                     </p>
                 </div>
-                </div>
+            </div>
             
             <div id="updates-page" class="p-4 space-y-6 sub-page relative pb-24">
                 <h2 class="text-xl font-bold text-center">🌟 𝐍𝐞𝐰 𝐔𝐩𝐝𝐚𝐭𝐞</h2>
@@ -193,7 +193,6 @@
             <div id="tutorial-page" class="p-4 space-y-6 sub-page relative pb-24">
                 <h2 class="text-xl font-bold text-center mb-2">🎥 কিভাবে কাজ করবেন?</h2>
                 <p class="text-center text-gray-500 mb-6">আমাদের পরিষেবাগুলি কীভাবে সর্বোত্তমভাবে ব্যবহার করবেন তা শিখতে নিচের টিউটোরিয়ালটি দেখুন।</p>
-
                 <div class="card-bg rounded-2xl overflow-hidden shadow-lg">
                     <div class="aspect-w-16 aspect-h-9">
                         <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -203,7 +202,6 @@
                         <p class="text-gray-600 mt-1 text-sm">সম্পূর্ণ প্রক্রিয়াটি বুঝতে ভিডিওটি মনোযোগ সহকারে দেখুন।</p>
                     </div>
                 </div>
-
                 <div class="card-bg rounded-2xl p-5 shadow-lg">
                     <h3 class="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
                         <i data-lucide="list-checks" class="w-5 h-5 text-[#0d6efd]"></i>
@@ -415,15 +413,28 @@
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
             
-            // Review Modal Listeners
             document.getElementById('add-review-btn').addEventListener('click', showReviewModal);
             document.getElementById('cancel-review-btn').addEventListener('click', hideReviewModal);
             document.getElementById('submit-review-btn').addEventListener('click', handleReviewSubmit);
-            document.querySelectorAll('#review-rating-stars .lucide-star').forEach(star => {
-                star.addEventListener('click', () => {
-                    selectedRating = parseInt(star.dataset.value);
-                    updateStarRatingUI();
-                });
+
+            // --- FIXED: Review star rating logic using event delegation ---
+            document.getElementById('review-rating-stars').addEventListener('click', (event) => {
+                const starContainer = event.currentTarget;
+                // Find the clicked element, which could be the SVG or a path inside it
+                const clickedElement = event.target.closest('svg');
+
+                if (clickedElement) {
+                    // Get all star elements (SVGs) within the container
+                    const allStars = Array.from(starContainer.children);
+                    // Find the index of the clicked star
+                    const clickedIndex = allStars.indexOf(clickedElement);
+                    
+                    if (clickedIndex !== -1) {
+                        // Rating is the index + 1 (since index is 0-based)
+                        selectedRating = clickedIndex + 1;
+                        updateStarRatingUI();
+                    }
+                }
             });
         }
         
@@ -568,10 +579,10 @@
             }
         }
         
-        // Review Modal Functions
         function showReviewModal() {
             selectedRating = 0;
-            updateStarRatingUI();
+            // The icons in the modal are already created once, so we just need to reset the UI
+            updateStarRatingUI(); 
             document.getElementById('review-text-input').value = '';
             document.getElementById('review-modal').classList.remove('hidden');
         }
@@ -580,16 +591,17 @@
             document.getElementById('review-modal').classList.add('hidden');
         }
         
+        // --- FIXED: updateStarRatingUI now works with indices ---
         function updateStarRatingUI() {
-            const stars = document.querySelectorAll('#review-rating-stars .lucide-star');
-            stars.forEach(star => {
-                const starValue = parseInt(star.dataset.value);
-                if (starValue <= selectedRating) {
-                    star.style.fill = '#facc15'; // yellow-400
+            const stars = document.querySelectorAll('#review-rating-stars > *');
+            stars.forEach((star, index) => {
+                const currentRatingValue = index + 1;
+                if (currentRatingValue <= selectedRating) {
+                    star.style.fill = '#facc15';
                     star.style.color = '#facc15';
                 } else {
                     star.style.fill = 'none';
-                    star.style.color = '#d1d5db'; // gray-300
+                    star.style.color = '#d1d5db';
                 }
             });
         }
@@ -629,7 +641,6 @@
             }
         }
 
-
         window.handleVote = async function(voteType, updateId) {
             const likeBtn = document.getElementById(`like-btn-${updateId}`);
             const dislikeBtn = document.getElementById(`dislike-btn-${updateId}`);
@@ -659,7 +670,6 @@
                     dislikeBtn.classList.remove('text-gray-500');
                     dislikeBtn.classList.add('voted-dislike');
                 }
-
             } catch (e) {
                 showAlert(e.message || "Failed to submit your vote.");
                 likeBtn.disabled = false;
