@@ -54,7 +54,6 @@
         .sub-page { display: none; }
         .sub-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         
-        /* === Premium Bottom Navigation Bar - UPDATED === */
         .bottom-nav {
              border-top: 1px solid #e9ecef;
              background-color: rgba(255, 255, 255, 0.9);
@@ -69,19 +68,19 @@
              display: flex;
              justify-content: space-around;
              align-items: center;
-             padding: 8px 10px; /* Added horizontal padding */
+             padding: 8px 10px;
              z-index: 50;
         }
         .nav-link-premium { 
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px; /* Reduced gap */
+            gap: 2px;
             color: #495057;
-            font-size: 0.7rem; /* Slightly smaller font */
+            font-size: 0.7rem;
             font-weight: 600;
-            padding: 6px 12px; /* Adjusted padding for pill shape */
-            border-radius: 16px; /* Rounded corners */
+            padding: 6px 12px;
+            border-radius: 16px;
             transition: all 0.25s ease-in-out;
             position: relative;
             flex: 1;
@@ -93,13 +92,13 @@
         }
         .nav-link-premium.active {
             color: #0d6efd;
-            background-color: rgba(13, 110, 253, 0.1); /* Light blue background for active */
+            background-color: rgba(13, 110, 253, 0.1);
         }
         .nav-link-premium.active .icon {
             transform: scale(1.1);
         }
         .nav-link-premium:not(.active):hover {
-             background-color: #f1f3f5; /* Light gray for hover */
+             background-color: #f1f3f5;
         }
         .nav-link-premium:active { transform: scale(0.95); }
        
@@ -111,7 +110,6 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Splash Screen Styles */
         #splash-screen {
             position: fixed; inset: 0; background-color: #ffffff; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: opacity 0.5s ease-out;
         }
@@ -120,18 +118,16 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Vote button styles */
         .vote-btn { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease; }
         .vote-btn:active { transform: scale(0.85); }
         .vote-btn.voted-like { color: #0d6efd; transform: scale(1.2); }
         .vote-btn.voted-dislike { color: #dc3545; transform: scale(1.2); }
 
-        /* Premium Review Card Styles */
         .review-card-premium { background-color: #ffffff; border: 1px solid #eef2f7; border-radius: 20px; padding: 20px; box-shadow: 0 8px 24px rgba(0, 30, 80, 0.08); display: flex; flex-direction: column; gap: 12px; }
         .review-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
         .reviewer-info { display: flex; align-items: center; gap: 12px; }
         .review-avatar-premium { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; color: #fff; background: linear-gradient(135deg, #1e90ff, #0d6efd); flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .review-avatar-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } /* Style for real photo */
+        .review-avatar-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .review-name-premium { font-weight: 700; font-size: 1.1rem; color: #212529; }
         .review-date { font-size: 0.75rem; color: #6c757d; }
         .review-stars .lucide-star { fill: #ffc107; color: #ffc107; }
@@ -139,36 +135,14 @@
         .review-body .lucide-quote { position: absolute; left: 0; top: 0; width: 20px; height: 20px; color: #e9ecef; }
         .review-text-premium { color: #343a40; font-size: 0.95rem; line-height: 1.6; }
         
-        /* Review Modal Styles */
-        #review-rating-stars .lucide-star, #review-rating-stars svg {
-            cursor: pointer;
-            color: #d1d5db; /* gray-300 */
-            transition: color 0.2s, transform 0.2s;
-        }
-        #review-rating-stars .lucide-star:hover, #review-rating-stars svg:hover {
-            transform: scale(1.2);
-            color: #facc15; /* yellow-400 */
-        }
+        #review-rating-stars .lucide-star, #review-rating-stars svg { cursor: pointer; color: #d1d5db; transition: color 0.2s, transform 0.2s; }
+        #review-rating-stars .lucide-star:hover, #review-rating-stars svg:hover { transform: scale(1.2); color: #facc15; }
 
-        /* Video and Image aspect ratio helper classes */
-        .aspect-w-16 { position: relative; padding-bottom: 56.25%; height: 0; }
-        .aspect-w-16 > * { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-        /* WhatsApp Button Custom Style */
-        .whatsapp-btn {
-            background-color: #25D366;
-            color: #ffffff;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            transition: all 0.2s ease-in-out;
-        }
-        .whatsapp-btn:hover {
-            background-color: #1DA851;
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-        }
+        .whatsapp-btn { background-color: #25D366; color: #ffffff; font-weight: bold; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: all 0.2s ease-in-out; }
+        .whatsapp-btn:hover { background-color: #1DA851; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
         .whatsapp-btn:active { transform: scale(0.96); }
 
-        /* === NEW: Premium Product Card Style === */
+        /* === NEW & IMPROVED: Premium Product Card Style === */
         .product-card-premium {
             background: #ffffff;
             border-radius: 24px;
@@ -185,60 +159,45 @@
         }
         .product-image-container {
             position: relative;
+            height: 200px; /* Fixed height for all images */
+            background-color: #f1f3f5;
         }
-        .product-price {
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image covers the area without distortion */
+        }
+        .product-discount-badge {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
+            top: 16px;
+            left: 16px;
+            background-color: #dc3545; /* Red color for attention */
             color: white;
-            font-size: 1.25rem;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.5);
         }
         
         /* === NEW: Product Details Modal === */
         #product-details-modal {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 150;
-            display: flex;
-            align-items: flex-end; /* Changed to flex-end */
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6); z-index: 150;
+            display: flex; align-items: flex-end; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
             backdrop-filter: blur(5px);
         }
-        #product-details-modal.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        #product-details-modal.visible { opacity: 1; visibility: visible; }
         .details-modal-content {
-            background-color: #f8f9fa;
-            width: 100%;
-            max-width: 672px; /* Match body width */
-            border-radius: 24px 24px 0 0;
-            padding: 24px;
+            background-color: #f8f9fa; width: 100%; max-width: 672px;
+            border-radius: 24px 24px 0 0; padding: 24px;
             box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        #product-details-modal.visible .details-modal-content {
-            transform: translateY(0);
-        }
+        #product-details-modal.visible .details-modal-content { transform: translateY(0); }
         .details-step-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 10px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 10px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e9ecef;
         }
 
     </style>
@@ -274,8 +233,8 @@
                 <h2 class="text-xl font-bold text-center mb-2">🎥 কিভাবে কাজ করবেন?</h2>
                 <p class="text-center text-gray-500 mb-6">আমাদের পরিষেবাগুলি কীভাবে সর্বোত্তমভাবে ব্যবহার করবেন তা শিখতে নিচের টিউটোরিয়ালটি দেখুন।</p>
                 <div class="card-bg rounded-2xl overflow-hidden shadow-lg">
-                    <div class="aspect-w-16">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                     <div class="p-5">
                         <h3 class="font-bold text-lg text-gray-800">ধাপ-ভিত্তিক ভিডিও গাইড</h3>
@@ -378,10 +337,8 @@
         <div class="bg-white rounded-xl p-6 w-full max-w-sm text-center border border-gray-200 shadow-xl space-y-4">
             <h3 class="text-lg font-bold">আপনার মতামত দিন</h3>
             <div id="review-rating-stars" class="rating-stars flex justify-center gap-2 text-3xl">
-                <i data-lucide="star" data-value="1"></i>
-                <i data-lucide="star" data-value="2"></i>
-                <i data-lucide="star" data-value="3"></i>
-                <i data-lucide="star" data-value="4"></i>
+                <i data-lucide="star" data-value="1"></i> <i data-lucide="star" data-value="2"></i>
+                <i data-lucide="star" data-value="3"></i> <i data-lucide="star" data-value="4"></i>
                 <i data-lucide="star" data-value="5"></i>
             </div>
             <textarea id="review-text-input" class="w-full border border-gray-300 rounded-lg p-2 h-24" placeholder="আপনার মূল্যবান মতামত লিখুন..."></textarea>
@@ -430,7 +387,6 @@
                 }
                 
                 currentUserId = String(currentUser.id);
-
                 await initializeAppLogic();
 
             } catch (e) {
@@ -442,7 +398,6 @@
         async function initializeAppLogic() {
             lucide.createIcons();
             setupEventListeners();
-            
             await fetchOrCreateUser();
 
             if (userData && userData.isBlocked) {
@@ -476,7 +431,7 @@
                     name: fullName || currentUser.username || 'New User',
                     username: currentUser.username || '',
                     createdAt: serverTimestamp(),
-                    lastReviewTimestamp: null, // NEW: Add this field for new users
+                    lastReviewTimestamp: null,
                     isBlocked: false,
                 };
                 
@@ -493,10 +448,8 @@
             });
 
             const pageLoadFunctions = {
-                'home-page': loadHomeProducts,
-                'updates-page': loadUpdates,
-                'reviews-page': loadUserReviews,
-                'profile-page': loadProfilePage,
+                'home-page': loadHomeProducts, 'updates-page': loadUpdates,
+                'reviews-page': loadUserReviews, 'profile-page': loadProfilePage,
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -505,15 +458,12 @@
 
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
-            
             document.getElementById('add-review-btn').addEventListener('click', showReviewModal);
             document.getElementById('cancel-review-btn').addEventListener('click', hideReviewModal);
             document.getElementById('submit-review-btn').addEventListener('click', handleReviewSubmit);
-
             document.getElementById('review-rating-stars').addEventListener('click', (event) => {
                 const starContainer = event.currentTarget;
                 const clickedElement = event.target.closest('svg');
-
                 if (clickedElement) {
                     const allStars = Array.from(starContainer.children);
                     const clickedIndex = allStars.indexOf(clickedElement);
@@ -525,7 +475,7 @@
             });
         }
         
-        // MODIFIED: Product loading function with premium design
+        // MODIFIED & IMPROVED: Product loading function with new design
         async function loadHomeProducts() {
             const container = document.getElementById('home-products-list');
             container.innerHTML = '<p class="text-center text-gray-500 py-10">Loading amazing offers...</p>';
@@ -545,14 +495,17 @@
                     
                     return `
                     <div class="product-card-premium">
-                        <div class="product-image-container aspect-w-16">
-                            <img src="${product.imageUrl}" class="object-cover" alt="${product.title || 'Product Image'}">
-                            <div class="product-price">${product.price || 'N/A'}</div>
+                        <div class="product-image-container">
+                            <img src="${product.imageUrl}" alt="${product.title || 'Product Image'}">
+                            ${product.discount ? `<div class="product-discount-badge">${product.discount} OFF</div>` : ''}
                         </div>
                         <div class="p-5 flex-grow flex flex-col">
-                            <h3 class="text-xl font-bold text-gray-800">${product.title || 'Awesome Product'}</h3>
-                            <p class="text-gray-500 text-sm mt-1 mb-4 flex-grow">${product.description || 'Check out the details for more.'}</p>
-                            <div class="grid grid-cols-2 gap-3 mt-auto">
+                            <div class="flex justify-between items-start gap-3 mb-1">
+                                <h3 class="text-xl font-bold text-gray-800 flex-1">${product.title || 'Awesome Product'}</h3>
+                                <p class="text-2xl font-extrabold text-accent-gradient whitespace-nowrap">${product.price || 'N/A'}</p>
+                            </div>
+                            <p class="text-gray-500 text-sm mb-4 flex-grow">${product.description || 'Check out the details for more.'}</p>
+                            <div class="grid grid-cols-2 gap-3 mt-auto pt-2">
                                 <button onclick="showProductDetails('${productId}')" class="w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl transition-colors">
                                     View Details
                                 </button>
@@ -571,7 +524,6 @@
             }
         }
         
-        // NEW: Function to show product details modal
         window.showProductDetails = async function(productId) {
             const modal = document.getElementById('product-details-modal');
             const titleEl = document.getElementById('details-title');
@@ -585,14 +537,11 @@
             
             try {
                 const productDoc = await getDoc(doc(db, "products", productId));
-                if (!productDoc.exists()) {
-                    throw new Error("Product not found.");
-                }
+                if (!productDoc.exists()) { throw new Error("Product not found."); }
                 const product = productDoc.data();
 
                 titleEl.textContent = product.title || 'Product Details';
 
-                // Load steps from Firestore (assuming 'detailsSteps' is an array of strings)
                 const steps = product.detailsSteps || [];
                 if (steps.length > 0) {
                     stepsContainer.innerHTML = steps.map(step => `
@@ -605,25 +554,23 @@
                     stepsContainer.innerHTML = '<p class="text-center text-gray-500">No specific details provided.</p>';
                 }
                 
-                // Load buttons from Firestore
                 const contactLink = product.contactLink || 'https://wa.me/8801864260513';
-                const demoLink = product.demoLink; // This can be undefined
+                const demoLink = product.demoLink;
 
-                buttonsContainer.innerHTML = `
+                let buttonsHTML = `
                     <a href="${contactLink}" target="_blank" class="w-full btn-gradient flex items-center justify-center gap-2 py-3 px-4 rounded-xl">
                         <i data-lucide="send" class="w-5 h-5"></i><span>Contact</span>
                     </a>
                 `;
                 if(demoLink) {
-                    buttonsContainer.innerHTML += `
+                    buttonsHTML += `
                     <a href="${demoLink}" target="_blank" class="w-full bg-white border border-gray-300 text-gray-800 font-bold flex items-center justify-center gap-2 py-3 px-4 rounded-xl hover:bg-gray-100 transition-colors">
                         <i data-lucide="play-circle" class="w-5 h-5"></i><span>Demo Bot</span>
                     </a>
                     `;
                 }
-
+                buttonsContainer.innerHTML = buttonsHTML;
                 lucide.createIcons();
-
             } catch(error) {
                 console.error("Error fetching product details:", error);
                 titleEl.textContent = 'Error';
@@ -631,14 +578,12 @@
             }
         }
 
-        // NEW: Function to hide product details modal
         window.hideProductDetails = function() {
             document.getElementById('product-details-modal').classList.remove('visible');
         }
 
         async function loadProfilePage() {
             if (!userData) return;
-            
             const profilePic = document.getElementById('profile-pic');
             const avatarDiv = document.getElementById('profile-initials-avatar');
             if (currentUser.photo_url) {
@@ -651,22 +596,18 @@
                 profilePic.classList.add('hidden');
                 avatarDiv.classList.remove('hidden');
             }
-            
             document.getElementById('profile-name').textContent = userData.name;
             document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : 'No Telegram username';
             document.getElementById('profile-id').textContent = `User ID: ${currentUserId}`;
-
             lucide.createIcons();
         }
         
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
             updatesContainer.innerHTML = '<p class="text-center text-gray-500">Loading updates...</p>';
-
             try {
                 const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(10));
                 const snapshot = await getDocs(q);
-
                 if (snapshot.empty) {
                     updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
                 } else {
@@ -675,21 +616,16 @@
                     for (const docSnap of snapshot.docs) {
                         const updateData = docSnap.data();
                         const updateId = docSnap.id;
-
                         const updateRef = doc(db, "updates", updateId);
                         batch.update(updateRef, { views: increment(1) });
-
                         const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
                         const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
-
-                        const isLiked = userVote === 'liked';
-                        const isDisliked = userVote === 'disliked';
-                        
+                        const isLiked = userVote === 'liked', isDisliked = userVote === 'disliked';
                         allUpdatesHtml += `
                         <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
-                            <a href="${updateData.linkUrl || '#'}" target="_blank" class="block w-full aspect-w-16">
-                                <img src="${updateData.imageUrl}" class="object-cover" alt="Update Banner">
-                            </a>
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                               <img src="${updateData.imageUrl}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="Update Banner">
+                            </div>
                             <div class="p-5 space-y-3 flex flex-col flex-grow">
                                 <h3 class="text-xl font-bold">${updateData.title}</h3>
                                 <p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p>
@@ -713,7 +649,6 @@
                     await batch.commit(); 
                     updatesContainer.innerHTML = allUpdatesHtml;
                 }
-                
                 lucide.createIcons();
             } catch (e) {
                 console.error("Error loading updates:", e);
@@ -733,43 +668,25 @@
         async function loadUserReviews() {
             const reviewsList = document.getElementById('user-reviews-list');
             reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
-            
-            // NEW: Check 7-day review cooldown
             checkReviewCooldown();
-
             try {
                 const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(10));
                 const snapshot = await getDocs(q);
-
                 if (snapshot.empty) {
                     reviewsList.innerHTML = '<p class="text-center text-gray-500">No reviews yet. Be the first!</p>';
                     return;
                 }
-                
                 reviewsList.innerHTML = snapshot.docs.map(doc => {
                     const review = doc.data();
                     const starsHtml = renderStars(review.rating || 5);
-                    const date = review.createdAt ? review.createdAt.toDate().toLocaleDateString('en-GB', {
-                        day: 'numeric', month: 'long', year: 'numeric'
-                    }) : '';
-                    
-                    let avatarHtml;
-                    if (review.userPhotoUrl) {
-                        avatarHtml = `<img src="${review.userPhotoUrl}" class="review-avatar-img" alt="User Avatar">`;
-                    } else {
-                        const initial = review.userName ? review.userName.charAt(0).toUpperCase() : 'U';
-                        avatarHtml = `<div class="review-avatar-premium">${initial}</div>`;
-                    }
-
+                    const date = review.createdAt ? review.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+                    let avatarHtml = review.userPhotoUrl ? `<img src="${review.userPhotoUrl}" class="review-avatar-img" alt="User Avatar">` : `<div class="review-avatar-premium">${review.userName ? review.userName.charAt(0).toUpperCase() : 'U'}</div>`;
                     return `
                     <div class="review-card-premium">
                         <div class="review-header">
                             <div class="reviewer-info">
                                 ${avatarHtml}
-                                <div>
-                                    <div class="review-name-premium">${review.userName}</div>
-                                    <div class="review-date">${date}</div>
-                                </div>
+                                <div> <div class="review-name-premium">${review.userName}</div> <div class="review-date">${date}</div> </div>
                             </div>
                             ${starsHtml}
                         </div>
@@ -786,21 +703,19 @@
             }
         }
         
-        // NEW: Function to check and handle review cooldown
         function checkReviewCooldown() {
             const addReviewBtn = document.getElementById('add-review-btn');
             if (userData && userData.lastReviewTimestamp) {
                 const lastReviewTime = userData.lastReviewTimestamp.toDate().getTime();
                 const currentTime = new Date().getTime();
                 const sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
-                
                 if (currentTime - lastReviewTime < sevenDaysInMillis) {
                     addReviewBtn.disabled = true;
-                    return true; // User is on cooldown
+                    return true;
                 }
             }
             addReviewBtn.disabled = false;
-            return false; // User is not on cooldown
+            return false;
         }
 
         function showReviewModal() {
@@ -828,45 +743,27 @@
         }
 
         async function handleReviewSubmit() {
-            // Re-check cooldown on submit
             if (checkReviewCooldown()) {
                  showAlert("আপনি ইতিমধ্যেই একটি রিভিউ জমা দিয়েছেন।");
                  return;
             }
             const reviewText = document.getElementById('review-text-input').value.trim();
-            if (selectedRating === 0) {
-                showAlert("Please select a star rating.");
-                return;
-            }
-            if (reviewText === "") {
-                showAlert("Please write your review.");
-                return;
-            }
-
+            if (selectedRating === 0) { showAlert("Please select a star rating."); return; }
+            if (reviewText === "") { showAlert("Please write your review."); return; }
             const submitBtn = document.getElementById('submit-review-btn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
-
             try {
-                // Add the review
                 await addDoc(collection(db, "app_reviews"), {
-                    userName: userData.name,
-                    userId: currentUserId,
-                    rating: selectedRating,
-                    reviewText: reviewText,
-                    userPhotoUrl: currentUser.photo_url || null,
-                    createdAt: serverTimestamp()
+                    userName: userData.name, userId: currentUserId, rating: selectedRating,
+                    reviewText: reviewText, userPhotoUrl: currentUser.photo_url || null, createdAt: serverTimestamp()
                 });
-
-                // NEW: Update user's last review timestamp
                 const userRef = doc(db, "users", currentUserId);
-                const newTimestamp = serverTimestamp();
-                await updateDoc(userRef, { lastReviewTimestamp: newTimestamp });
-                userData.lastReviewTimestamp = { toDate: () => new Date() }; // Update local user data immediately
-
+                await updateDoc(userRef, { lastReviewTimestamp: serverTimestamp() });
+                userData.lastReviewTimestamp = { toDate: () => new Date() };
                 showAlert("Thank you! Your review has been submitted successfully.");
                 hideReviewModal();
-                loadUserReviews(); // Reload to show new review and update button state
+                loadUserReviews();
             } catch (error) {
                 console.error("Error submitting review: ", error);
                 showAlert("Sorry, there was an error submitting your review. Please try again.");
@@ -881,30 +778,20 @@
             const dislikeBtn = document.getElementById(`dislike-btn-${updateId}`);
             likeBtn.disabled = true;
             dislikeBtn.disabled = true;
-
             const updateRef = doc(db, "updates", updateId);
             const userInteractionRef = doc(db, "updates", updateId, "userInteractions", currentUserId);
-            
             try {
                 await runTransaction(db, async (transaction) => {
                     const userInteractionDoc = await transaction.get(userInteractionRef);
                     if (userInteractionDoc.exists()) throw new Error("You have already cast your vote.");
-                    
                     const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
                     transaction.update(updateRef, { [fieldToUpdate]: increment(1) });
                     transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
                 });
                 const countElement = document.getElementById(`${voteType}-count-${updateId}`);
                 countElement.textContent = parseInt(countElement.textContent) + 1;
-                
-                if(voteType === 'like') {
-                    likeBtn.classList.remove('text-gray-500');
-                    likeBtn.classList.add('voted-like');
-                }
-                if(voteType === 'dislike') {
-                    dislikeBtn.classList.remove('text-gray-500');
-                    dislikeBtn.classList.add('voted-dislike');
-                }
+                if(voteType === 'like') { likeBtn.classList.remove('text-gray-500'); likeBtn.classList.add('voted-like'); }
+                if(voteType === 'dislike') { dislikeBtn.classList.remove('text-gray-500'); dislikeBtn.classList.add('voted-dislike'); }
             } catch (e) {
                 showAlert(e.message || "Failed to submit your vote.");
                 likeBtn.disabled = false;
