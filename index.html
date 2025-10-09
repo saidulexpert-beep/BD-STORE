@@ -69,7 +69,7 @@
              display: flex;
              justify-content: space-around;
              align-items: center;
-             padding: 8px 0; /* Adjusted padding */
+             padding: 8px 0;
              z-index: 50;
         }
         .nav-link-premium { 
@@ -141,7 +141,7 @@
         /* Scrolling Text (Marquee) Styles */
         @keyframes scroll-left { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .scrolling-text-container { width: 100%; overflow: hidden; background-color: #e9ecef; padding: 10px 0; border-radius: 8px; }
-        .scrolling-text { display: inline-block; white-space: nowrap; animation: scroll-left 20s linear infinite; font-weight: 500; color: #495057; }
+        .scrolling-text { display: inline-block; white-space: nowrap; animation: scroll-left 40s linear infinite; font-weight: 500; color: #495057; }
         
         /* Review Modal Styles */
         #review-modal .rating-stars .lucide-star {
@@ -153,7 +153,11 @@
             transform: scale(1.2);
             color: #facc15; /* yellow-400 */
         }
-        #review-modal .rating-stars.selected .lucide-star { color: #facc15; }
+
+        /* Video aspect ratio helper classes */
+        .aspect-w-16 { position: relative; padding-bottom: 56.25%; }
+        .aspect-h-9 { height: 0; }
+        .aspect-w-16 > iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
     </style>
 </head>
@@ -173,11 +177,13 @@
         </header>
 
         <main class="flex-grow pb-24">
-            <div id="home-page" class="p-4 sub-page">
+            <div id="home-page" class="p-4 space-y-6 sub-page">
                 <div class="scrolling-text-container">
-                    <p class="scrolling-text">Welcome to Best MarketBot ✨ আপনার সকল ডিজিটাল প্রয়োজনের জন্য ওয়ান-স্টপ সমাধান ✨ সর্বশেষ খবর এবং অফারগুলির জন্য আপডেট বিভাগটি দেখুন! ✨</p>
+                    <p class="scrolling-text">
+                        Welcome to Best MarketBot ✨ আপনার সকল ডিজিটাল প্রয়োজনের জন্য ওয়ান-স্টপ সমাধান ✨ সর্বশেষ খবর এবং অফারগুলির জন্য আপডেট বিভাগটি দেখুন! ✨ &nbsp;&nbsp;&nbsp; Welcome to Best MarketBot ✨ আপনার সকল ডিজিটাল প্রয়োজনের জন্য ওয়ান-স্টপ সমাধান ✨ সর্বশেষ খবর এবং অফারগুলির জন্য আপডেট বিভাগটি দেখুন! ✨ &nbsp;&nbsp;&nbsp;
+                    </p>
                 </div>
-                 </div>
+                </div>
             
             <div id="updates-page" class="p-4 space-y-6 sub-page relative pb-24">
                 <h2 class="text-xl font-bold text-center">🌟 𝐍𝐞𝐰 𝐔𝐩𝐝𝐚𝐭𝐞</h2>
@@ -185,26 +191,43 @@
             </div>
 
             <div id="tutorial-page" class="p-4 space-y-6 sub-page relative pb-24">
-                 <h2 class="text-xl font-bold text-center">🎥 কিভাবে কাজ করবেন?</h2>
-                 <details class="card-bg rounded-xl overflow-hidden" open>
-                    <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
-                        <span>Tutorial Video</span>
-                        <i data-lucide="chevron-down" class="lucide-chevron-down transition-transform duration-300"></i>
-                    </summary>
-                    <div class="p-4 border-t border-gray-200">
-                        <div class="aspect-w-16 aspect-h-9">
-                             <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
+                <h2 class="text-xl font-bold text-center mb-2">🎥 কিভাবে কাজ করবেন?</h2>
+                <p class="text-center text-gray-500 mb-6">আমাদের পরিষেবাগুলি কীভাবে সর্বোত্তমভাবে ব্যবহার করবেন তা শিখতে নিচের টিউটোরিয়ালটি দেখুন।</p>
+
+                <div class="card-bg rounded-2xl overflow-hidden shadow-lg">
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
-                </details>
-                <style>
-                    details summary::-webkit-details-marker { display: none; }
-                    details summary .lucide-chevron-down { transform: rotate(0deg); }
-                    details[open] summary .lucide-chevron-down { transform: rotate(180deg); }
-                    .aspect-w-16 { position: relative; padding-bottom: 56.25%; }
-                    .aspect-h-9 { height: 0; }
-                    .aspect-w-16 > iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-                </style>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-gray-800">ধাপ-ভিত্তিক ভিডিও গাইড</h3>
+                        <p class="text-gray-600 mt-1 text-sm">সম্পূর্ণ প্রক্রিয়াটি বুঝতে ভিডিওটি মনোযোগ সহকারে দেখুন।</p>
+                    </div>
+                </div>
+
+                <div class="card-bg rounded-2xl p-5 shadow-lg">
+                    <h3 class="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="list-checks" class="w-5 h-5 text-[#0d6efd]"></i>
+                        <span>গুরুত্বপূর্ণ ধাপসমূহ</span>
+                    </h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"></i>
+                            <span>প্রথমে, আপনার প্রয়োজন অনুযায়ী সঠিক পরিষেবা নির্বাচন করুন।</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"></i>
+                            <span>নির্দেশনাগুলো সাবধানে পড়ুন এবং প্রয়োজনীয় তথ্য প্রদান করুন।</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"></i>
+                            <span>আপনার অর্ডার জমা দিন এবং নিশ্চিতকরণের জন্য অপেক্ষা করুন।</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"></i>
+                            <span>যেকোনো সহায়তার জন্য আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন।</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <div id="reviews-page" class="p-4 space-y-6 sub-page relative pb-24">
@@ -247,9 +270,9 @@
         </main>
 
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="home-page"><i data-lucide="home" class="icon"></i><span>Home</span></a>
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Update</span></a>
             <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>
+            <a href="#" class="nav-link-premium" data-page="home-page"><i data-lucide="home" class="icon"></i><span>Home</span></a>
             <a href="#" class="nav-link-premium" data-page="reviews-page"><i data-lucide="star" class="icon"></i><span>Review</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
         </nav>
@@ -281,15 +304,15 @@
     </div>
     
     <script type="module">
-const firebaseConfig = {
-  apiKey: "AIzaSyC8Yk4PYImkCsil2KMySE4I7amM7_GJwJw",
-  authDomain: "bd-store-e74c5.firebaseapp.com",
-  databaseURL: "https://bd-store-e74c5-default-rtdb.firebaseio.com",
-  projectId: "bd-store-e74c5",
-  storageBucket: "bd-store-e74c5.firebasestorage.app",
-  messagingSenderId: "318601642421",
-  appId: "1:318601642421:web:fc7304c3e2464b234459fc"
-};
+        const firebaseConfig = {
+          apiKey: "AIzaSyC8Yk4PYImkCsil2KMySE4I7amM7_GJwJw",
+          authDomain: "bd-store-e74c5.firebaseapp.com",
+          databaseURL: "https://bd-store-e74c5-default-rtdb.firebaseio.com",
+          projectId: "bd-store-e74c5",
+          storageBucket: "bd-store-e74c5.firebasestorage.app",
+          messagingSenderId: "318601642421",
+          appId: "1:318601642421:web:fc7304c3e2464b234459fc"
+        };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, writeBatch, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -300,7 +323,6 @@ const firebaseConfig = {
         let currentUser = null; 
         let currentUserId = null; 
         let userData = null;
-        let previousPageId = 'home-page'; 
         let selectedRating = 0; // For review modal
         
         const splashScreen = document.getElementById('splash-screen');
@@ -340,7 +362,7 @@ const firebaseConfig = {
                 return;
             }
             
-            navigateTo('home-page', true); 
+            navigateTo('home-page'); 
 
             splashScreen.style.opacity = '0';
             setTimeout(() => {
@@ -373,16 +395,7 @@ const firebaseConfig = {
             }
         }
 
-        function navigateTo(pageId, isInitial = false) {
-            if (!isInitial) {
-                const currentPage = document.querySelector('.sub-page.active');
-                if (currentPage) {
-                    previousPageId = currentPage.id;
-                }
-            } else {
-                 previousPageId = 'home-page';
-            }
-
+        function navigateTo(pageId) {
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             document.querySelectorAll('.nav-link-premium').forEach(link => {
