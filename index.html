@@ -110,7 +110,6 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* === NEW: Premium Splash Screen === */
         #splash-screen {
             position: fixed; inset: 0; z-index: 200; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; 
@@ -139,11 +138,6 @@
             to { opacity: 1; transform: scale(1); }
         }
         
-        .vote-btn { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease; }
-        .vote-btn:active { transform: scale(0.85); }
-        .vote-btn.voted-like { color: #0d6efd; transform: scale(1.2); }
-        .vote-btn.voted-dislike { color: #dc3545; transform: scale(1.2); }
-
         .review-card-premium { background-color: #ffffff; border: 1px solid #eef2f7; border-radius: 20px; padding: 20px; box-shadow: 0 8px 24px rgba(0, 30, 80, 0.08); display: flex; flex-direction: column; gap: 12px; }
         .review-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
         .reviewer-info { display: flex; align-items: center; gap: 12px; }
@@ -158,87 +152,6 @@
         
         #review-rating-stars .lucide-star, #review-rating-stars svg { cursor: pointer; color: #d1d5db; transition: color 0.2s, transform 0.2s; }
         #review-rating-stars .lucide-star:hover, #review-rating-stars svg:hover { transform: scale(1.2); color: #facc15; }
-
-        .whatsapp-btn { background-color: #25D366; color: #ffffff; font-weight: bold; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: all 0.2s ease-in-out; }
-        .whatsapp-btn:hover { background-color: #1DA851; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
-        .whatsapp-btn:active { transform: scale(0.96); }
-
-        .product-card-premium {
-            background: #ffffff;
-            border-radius: 24px;
-            border: 1px solid #eef2f7;
-            box-shadow: 0 10px 30px rgba(0, 30, 80, 0.08);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .product-card-premium:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(13, 110, 253, 0.15);
-        }
-        .product-image-container {
-            position: relative;
-            height: 200px;
-            background-color: #f1f3f5;
-        }
-        .product-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .product-discount-badge {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background-color: #dc3545;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.5);
-        }
-        
-        #product-details-modal {
-            position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6); z-index: 150;
-            display: flex; align-items: flex-end; justify-content: center;
-            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        #product-details-modal.visible { opacity: 1; visibility: visible; }
-        .details-modal-content {
-            background-color: #f8f9fa; width: 100%; max-width: 672px;
-            border-radius: 24px 24px 0 0; padding: 24px;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
-            transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        #product-details-modal.visible .details-modal-content { transform: translateY(0); }
-        .details-step-item {
-            display: flex; align-items: flex-start; gap: 12px;
-            padding: 10px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e9ecef;
-        }
-        
-        /* === NEW: Scrolling Marquee Text === */
-        .marquee-container {
-            background-color: #e9f2ff;
-            color: #0b5ed7;
-            padding: 10px;
-            border-radius: 12px;
-            overflow: hidden;
-            white-space: nowrap;
-            box-shadow: 0 2px 10px rgba(13, 110, 253, 0.1);
-        }
-        .marquee-content {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 15s linear infinite;
-            font-weight: 500;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
 
     </style>
 </head>
@@ -258,20 +171,7 @@
         </header>
 
         <main class="flex-grow pb-24">
-            <div id="home-page" class="p-4 space-y-6 sub-page">
-                 <div id="marquee-container" class="marquee-container" style="display: none;">
-                    <span id="marquee-content" class="marquee-content"></span>
-                </div>
-                 <div id="home-products-list" class="space-y-6">
-                    <p class="text-center text-gray-500 py-10">Loading amazing offers...</p>
-                </div>
-            </div>
             
-            <div id="updates-page" class="p-4 space-y-6 sub-page relative pb-24">
-                <h2 class="text-xl font-bold text-center">🌟 𝐍𝐞𝐰 𝐔𝐩𝐝𝐚𝐭𝐞</h2>
-                <div id="updates-content" class="space-y-4"><p class="text-center text-gray-500">Loading updates...</p></div>
-            </div>
-
             <div id="tutorial-page" class="p-4 space-y-6 sub-page relative pb-24">
                 <h2 class="text-xl font-bold text-center mb-2">🎥 কিভাবে কাজ করবেন?</h2>
                 <p class="text-center text-gray-500 mb-6">আমাদের পরিষেবাগুলি কীভাবে সর্বোত্তমভাবে ব্যবহার করবেন তা শিখতে নিচের টিউটোরিয়ালগুলো দেখুন।</p>
@@ -320,24 +220,11 @@
         </main>
 
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Update</span></a>
             <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>
-            <a href="#" class="nav-link-premium" data-page="home-page"><i data-lucide="home" class="icon"></i><span>Home</span></a>
             <a href="#" class="nav-link-premium" data-page="reviews-page"><i data-lucide="star" class="icon"></i><span>Review</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
         </nav>
     </div>
-
-    <div id="product-details-modal" onclick="hideProductDetails()">
-        <div class="details-modal-content" onclick="event.stopPropagation()">
-            <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div> <h2 id="details-title" class="text-2xl font-bold text-center mb-4">Product Details</h2>
-            <div id="details-steps-container" class="space-y-3 mb-6">
-                </div>
-            <div id="details-buttons-container" class="grid grid-cols-2 gap-4">
-                 </div>
-        </div>
-    </div>
-
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[101] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 shadow-xl">
@@ -419,15 +306,14 @@
                 return;
             }
             
-            navigateTo('home-page'); 
+            navigateTo('tutorial-page'); 
 
-            // MODIFIED: Improved splash screen transition
             splashScreen.classList.add('hidden');
             setTimeout(() => {
                 splashScreen.style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
                 document.body.style.overflow = 'auto';
-            }, 400); // Matched with CSS transition duration
+            }, 400);
         }
 
         async function fetchOrCreateUser() {
@@ -462,9 +348,7 @@
             });
 
             const pageLoadFunctions = {
-                'home-page': loadHomePageContent, // Combined loader
-                'updates-page': loadUpdates,
-                'tutorial-page': loadTutorials, // NEW: Dynamic tutorial loader
+                'tutorial-page': loadTutorials,
                 'reviews-page': loadUserReviews, 
                 'profile-page': loadProfilePage,
             };
@@ -492,79 +376,6 @@
             });
         }
         
-        // NEW: Function to load scrolling text from Firebase
-        async function loadScrollingText() {
-            const marqueeContainer = document.getElementById('marquee-container');
-            const marqueeContent = document.getElementById('marquee-content');
-            try {
-                const settingsDoc = await getDoc(doc(db, "settings", "homepage"));
-                if (settingsDoc.exists() && settingsDoc.data().scrollingText) {
-                    marqueeContent.textContent = settingsDoc.data().scrollingText;
-                    marqueeContainer.style.display = 'block';
-                } else {
-                    marqueeContainer.style.display = 'none';
-                }
-            } catch (error) {
-                console.error("Error loading scrolling text:", error);
-                marqueeContainer.style.display = 'none';
-            }
-        }
-
-        // MODIFIED: Combined home page loaders
-        async function loadHomePageContent() {
-            loadScrollingText();
-            loadHomeProducts();
-        }
-        
-        async function loadHomeProducts() {
-            const container = document.getElementById('home-products-list');
-            container.innerHTML = '<p class="text-center text-gray-500 py-10">Loading amazing offers...</p>';
-            try {
-                const q = query(collection(db, "products"), orderBy("order", "asc"));
-                const snapshot = await getDocs(q);
-
-                if (snapshot.empty) {
-                    container.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No products available right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
-                    return;
-                }
-
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const product = doc.data();
-                    const productId = doc.id;
-                    const whatsappLink = product.contactLink || 'https://wa.me/8801864260513';
-                    
-                    return `
-                    <div class="product-card-premium">
-                        <div class="product-image-container">
-                            <img src="${product.imageUrl}" alt="${product.title || 'Product Image'}">
-                            ${product.discount ? `<div class="product-discount-badge">${product.discount} OFF</div>` : ''}
-                        </div>
-                        <div class="p-5 flex-grow flex flex-col">
-                            <div class="flex justify-between items-start gap-3 mb-1">
-                                <h3 class="text-xl font-bold text-gray-800 flex-1">${product.title || 'Awesome Product'}</h3>
-                                <p class="text-2xl font-extrabold text-accent-gradient whitespace-nowrap">${product.price || 'N/A'}</p>
-                            </div>
-                            <p class="text-gray-500 text-sm mb-4 flex-grow">${product.description || 'Check out the details for more.'}</p>
-                            <div class="grid grid-cols-2 gap-3 mt-auto pt-2">
-                                <button onclick="showProductDetails('${productId}')" class="w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl transition-colors">
-                                    View Details
-                                </button>
-                                <a href="${whatsappLink}" target="_blank" class="w-full whatsapp-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl">
-                                    <img src="https://i.postimg.cc/ZRzWdsRL/download.jpg" alt="WhatsApp Icon" class="w-5 h-5">
-                                    <span>Contact</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>`;
-                }).join('');
-
-            } catch (error) {
-                console.error("Error loading products:", error);
-                container.innerHTML = `<p class="text-center text-red-500">Failed to load products. Please try again.</p>`;
-            }
-        }
-        
-        // NEW & IMPROVED: Dynamic tutorial loading function
         async function loadTutorials() {
             const container = document.getElementById('tutorial-content-container');
             container.innerHTML = '<p class="text-center text-gray-500 py-10">Loading tutorials...</p>';
@@ -619,72 +430,6 @@
             }
         }
 
-
-        window.showProductDetails = async function(productId) {
-            const modal = document.getElementById('product-details-modal');
-            const titleEl = document.getElementById('details-title');
-            const stepsContainer = document.getElementById('details-steps-container');
-            const buttonsContainer = document.getElementById('details-buttons-container');
-
-            titleEl.textContent = 'Loading...';
-            stepsContainer.innerHTML = '';
-            buttonsContainer.innerHTML = '';
-            modal.classList.add('visible');
-            
-            try {
-                const productDoc = await getDoc(doc(db, "products", productId));
-                if (!productDoc.exists()) { throw new Error("Product not found."); }
-                const product = productDoc.data();
-
-                titleEl.textContent = product.title || 'Product Details';
-
-                const steps = product.detailsSteps || [];
-                if (steps.length > 0) {
-                    stepsContainer.innerHTML = steps.map(step => `
-                        <div class="details-step-item">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"></i>
-                            <span class="text-gray-700">${step}</span>
-                        </div>
-                    `).join('');
-                } else {
-                    stepsContainer.innerHTML = '<p class="text-center text-gray-500">No specific details provided.</p>';
-                }
-                
-                const contactLink = product.contactLink || 'https://wa.me/8801864260513';
-                const demoLink = product.demoLink;
-
-                let buttonsHTML = `
-                    <a href="${contactLink}" target="_blank" class="w-full btn-gradient flex items-center justify-center gap-2 py-3 px-4 rounded-xl col-span-2 sm:col-span-1">
-                        <i data-lucide="send" class="w-5 h-5"></i><span>Contact</span>
-                    </a>
-                `;
-                if(demoLink) {
-                    buttonsHTML += `
-                    <a href="${demoLink}" target="_blank" class="w-full bg-white border border-gray-300 text-gray-800 font-bold flex items-center justify-center gap-2 py-3 px-4 rounded-xl hover:bg-gray-100 transition-colors col-span-2 sm:col-span-1">
-                        <i data-lucide="play-circle" class="w-5 h-5"></i><span>Demo Bot</span>
-                    </a>
-                    `;
-                }
-                buttonsContainer.innerHTML = buttonsHTML;
-                if(demoLink) { // Adjust grid for 2 buttons
-                    buttonsContainer.classList.remove('grid-cols-1');
-                    buttonsContainer.classList.add('grid-cols-2');
-                } else { // Adjust grid for 1 button
-                    buttonsContainer.classList.remove('grid-cols-2');
-                    buttonsContainer.classList.add('grid-cols-1');
-                }
-                lucide.createIcons();
-            } catch(error) {
-                console.error("Error fetching product details:", error);
-                titleEl.textContent = 'Error';
-                stepsContainer.innerHTML = '<p class="text-center text-red-500">Could not load details.</p>';
-            }
-        }
-
-        window.hideProductDetails = function() {
-            document.getElementById('product-details-modal').classList.remove('visible');
-        }
-
         async function loadProfilePage() {
             if (!userData) return;
             const profilePic = document.getElementById('profile-pic');
@@ -705,60 +450,6 @@
             lucide.createIcons();
         }
         
-        async function loadUpdates() {
-            const updatesContainer = document.getElementById('updates-content');
-            updatesContainer.innerHTML = '<p class="text-center text-gray-500">Loading updates...</p>';
-            try {
-                const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(10));
-                const snapshot = await getDocs(q);
-                if (snapshot.empty) {
-                    updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
-                } else {
-                    let allUpdatesHtml = '';
-                    const batch = writeBatch(db); 
-                    for (const docSnap of snapshot.docs) {
-                        const updateData = docSnap.data();
-                        const updateId = docSnap.id;
-                        const updateRef = doc(db, "updates", updateId);
-                        batch.update(updateRef, { views: increment(1) });
-                        const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
-                        const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
-                        const isLiked = userVote === 'liked', isDisliked = userVote === 'disliked';
-                        allUpdatesHtml += `
-                        <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
-                            <div style="position: relative; padding-bottom: 56.25%; height: 0;">
-                               <img src="${updateData.imageUrl}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="Update Banner">
-                            </div>
-                            <div class="p-5 space-y-3 flex flex-col flex-grow">
-                                <h3 class="text-xl font-bold">${updateData.title}</h3>
-                                <p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p>
-                                <div class="flex items-center justify-between gap-4 pt-3 mt-auto">
-                                    <div class="flex items-center space-x-2">
-                                        <button id="like-btn-${updateId}" class="vote-btn p-2 rounded-full ${isLiked ? 'voted-like' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button>
-                                        <span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span>
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <button id="dislike-btn-${updateId}" class="vote-btn p-2 rounded-full ${isDisliked ? 'voted-dislike' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button>
-                                        <span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span>
-                                    </div>
-                                    <div class="flex items-center gap-2 text-gray-500">
-                                        <i data-lucide="eye" class="w-5 h-5"></i>
-                                        <span class="font-semibold text-sm">${(updateData.views || 0) + 1}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-                    }
-                    await batch.commit(); 
-                    updatesContainer.innerHTML = allUpdatesHtml;
-                }
-                lucide.createIcons();
-            } catch (e) {
-                console.error("Error loading updates:", e);
-                updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
-            }
-        }
-
         function renderStars(rating) {
             let stars = '<div class="flex items-center gap-1 review-stars">';
             for (let i = 1; i <= 5; i++) {
@@ -873,32 +564,6 @@
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit';
-            }
-        }
-
-        window.handleVote = async function(voteType, updateId) {
-            const likeBtn = document.getElementById(`like-btn-${updateId}`);
-            const dislikeBtn = document.getElementById(`dislike-btn-${updateId}`);
-            likeBtn.disabled = true;
-            dislikeBtn.disabled = true;
-            const updateRef = doc(db, "updates", updateId);
-            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", currentUserId);
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const userInteractionDoc = await transaction.get(userInteractionRef);
-                    if (userInteractionDoc.exists()) throw new Error("You have already cast your vote.");
-                    const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
-                    transaction.update(updateRef, { [fieldToUpdate]: increment(1) });
-                    transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
-                });
-                const countElement = document.getElementById(`${voteType}-count-${updateId}`);
-                countElement.textContent = parseInt(countElement.textContent) + 1;
-                if(voteType === 'like') { likeBtn.classList.remove('text-gray-500'); likeBtn.classList.add('voted-like'); }
-                if(voteType === 'dislike') { dislikeBtn.classList.remove('text-gray-500'); dislikeBtn.classList.add('voted-dislike'); }
-            } catch (e) {
-                showAlert(e.message || "Failed to submit your vote.");
-                likeBtn.disabled = false;
-                dislikeBtn.disabled = false;
             }
         }
 
