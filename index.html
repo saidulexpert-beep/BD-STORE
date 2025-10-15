@@ -153,6 +153,37 @@
         #review-rating-stars .lucide-star, #review-rating-stars svg { cursor: pointer; color: #d1d5db; transition: color 0.2s, transform 0.2s; }
         #review-rating-stars .lucide-star:hover, #review-rating-stars svg:hover { transform: scale(1.2); color: #facc15; }
 
+        /* --- NEW STYLES FOR HOME PAGE --- */
+        #home-page { display: none; }
+        .service-button {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            text-decoration: none;
+        }
+        .service-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .service-button:active {
+            transform: translateY(0);
+        }
+        .service-button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none; /* Disables click */
+        }
+        .service-button img {
+            width: 32px;
+            height: 32px;
+            margin-right: 1rem;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -163,15 +194,25 @@
         <p class="text-gray-500">Loading Your Dashboard...</p>
     </div>
 
+    <div id="home-page" class="min-h-screen flex-col items-center justify-center p-6 space-y-8" style="display: none;">
+        <h1 class="text-2xl font-bold text-center text-accent-gradient">Choose a Service</h1>
+        <div id="home-buttons-container" class="w-full flex flex-col space-y-4">
+            <p class="text-center text-gray-500">Loading services...</p>
+        </div>
+        <p class="text-center text-gray-500 text-sm absolute bottom-4 left-0 right-0">Developed by <a href="https://t.me/bd_Storebot/Botshop" target="_blank" class="font-semibold text-[#0d6efd] hover:underline">𝐁𝐃 𝐒𝐓𝐎𝐑𝐄</a></p>
+    </div>
+
     <div id="app-container" class="min-h-screen flex-col main-page" style="display: none;">
-        <header class="header flex items-center justify-center p-4 sticky top-0 z-10">
+        <header class="header flex items-center justify-between p-4 sticky top-0 z-10">
+            <button id="back-to-home-btn" class="p-2 rounded-full hover:bg-gray-100">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-gray-700"></i>
+            </button>
             <div class="flex items-center space-x-2">
                 <h1 class="text-xl font-bold text-accent-gradient">𝐁𝐞𝐬𝐭 𝐌𝐚𝐫𝐤𝐞𝐭𝐁𝐨𝐭</h1>
             </div>
-        </header>
+            <div class="w-10"></div> </header>
 
         <main class="flex-grow pb-24">
-            
             <div id="tutorial-page" class="p-4 space-y-6 sub-page relative pb-24">
                 <h2 class="text-xl font-bold text-center mb-2">🎥 কিভাবে কাজ করবেন?</h2>
                 <p class="text-center text-gray-500 mb-6">আমাদের পরিষেবাগুলি কীভাবে সর্বোত্তমভাবে ব্যবহার করবেন তা শিখতে নিচের টিউটোরিয়ালগুলো দেখুন।</p>
@@ -303,15 +344,17 @@
             if (userData && userData.isBlocked) {
                 showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
                 document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('home-page').classList.add('hidden');
                 return;
             }
             
-            navigateTo('tutorial-page'); 
+            await loadHomeButtons();
+            
+            document.getElementById('home-page').style.display = 'flex';
 
             splashScreen.classList.add('hidden');
             setTimeout(() => {
                 splashScreen.style.display = 'none';
-                document.getElementById('app-container').style.display = 'flex';
                 document.body.style.overflow = 'auto';
             }, 400);
         }
@@ -339,6 +382,52 @@
                 userData = newUserData;
             }
         }
+        
+        function showHomePage() {
+            document.getElementById('home-page').style.display = 'flex';
+            document.getElementById('app-container').style.display = 'none';
+        }
+
+        function showWebChatPage() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('app-container').style.display = 'flex';
+            navigateTo('tutorial-page');
+        }
+
+        async function loadHomeButtons() {
+            const container = document.getElementById('home-buttons-container');
+            container.innerHTML = '<p class="text-center text-gray-500">Loading services...</p>';
+            try {
+                const q = query(collection(db, "service_buttons"), orderBy("order", "asc"));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    container.innerHTML = `<p class="text-center text-gray-600">No services are available right now.</p>`;
+                    return;
+                }
+
+                let buttonsHtml = '';
+                snapshot.forEach(doc => {
+                    const button = doc.data();
+                    const isDisabled = !button.isActive;
+                    const disabledClass = isDisabled ? 'disabled' : '';
+                    const action = button.link === 'internal_app' ? `data-action="internal"` : `data-action="external" data-link="${button.link}"`;
+
+                    buttonsHtml += `
+                        <a href="#" class="service-button ${disabledClass}" style="background-color: ${button.color || '#0d6efd'};" ${action}>
+                            <img src="${button.logoUrl}" alt="${button.name} logo">
+                            <span>${button.name}</span>
+                        </a>
+                    `;
+                });
+                container.innerHTML = buttonsHtml;
+                
+            } catch (error) {
+                console.error("Error loading service buttons:", error);
+                container.innerHTML = `<p class="text-center text-red-500">Failed to load services. Please try again.</p>`;
+            }
+        }
+
 
         function navigateTo(pageId) {
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
@@ -362,6 +451,23 @@
             document.getElementById('add-review-btn').addEventListener('click', showReviewModal);
             document.getElementById('cancel-review-btn').addEventListener('click', hideReviewModal);
             document.getElementById('submit-review-btn').addEventListener('click', handleReviewSubmit);
+            document.getElementById('back-to-home-btn').addEventListener('click', showHomePage);
+            
+            document.getElementById('home-buttons-container').addEventListener('click', (e) => {
+                const button = e.target.closest('.service-button');
+                if (!button || button.classList.contains('disabled')) return;
+                
+                e.preventDefault();
+                const action = button.dataset.action;
+                
+                if (action === 'internal') {
+                    showWebChatPage();
+                } else if (action === 'external') {
+                    const link = button.dataset.link;
+                    window.Telegram.WebApp.openLink(link);
+                }
+            });
+
             document.getElementById('review-rating-stars').addEventListener('click', (event) => {
                 const starContainer = event.currentTarget;
                 const clickedElement = event.target.closest('svg');
@@ -575,3 +681,4 @@
     </script>
 </body>
 </html>
+
